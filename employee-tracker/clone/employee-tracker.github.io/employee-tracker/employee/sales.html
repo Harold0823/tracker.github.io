@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+
+<head><title>Sales Report</title></head>
+
+<body class="container">
+
+  <h2>Sales Input</h2>
+
+  <input type="text" id="sim" placeholder="SIM Number">
+
+  <input type="text" id="iccid" placeholder="ICCID">
+
+  <textarea id="sales" placeholder="Sales Report"></textarea>
+
+  <input type="file" id="photo" accept="image/*" capture="environment">
+
+  <button onclick="saveSales()">Submit</button>
+
+  <script>
+
+    function saveSales() {
+      const reports = JSON.parse(localStorage.getItem('sales') || '[]');
+
+      const sim = document.getElementById('sim').value;
+      const iccid = document.getElementById('iccid').value;
+
+      const sales = document.getElementById('sales').value;
+
+      const photo = document.getElementById('photo').files[0];
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        reports.push({ sim, iccid, sales, photo: reader.result, time: new Date().toISOString() });
+
+        localStorage.setItem('sales', JSON.stringify(reports));
+
+        alert("Sales data saved!");
+
+      };
+
+      reader.readAsDataURL(photo);
+    }
+
+  </script>
+  
+</body>
+</html>

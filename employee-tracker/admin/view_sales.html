@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Sales Reports</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script defer>
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <h2>Sales Reports</h2>
+    <div id="salesContainer"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("salesContainer");
+
+            let sales = [];
+            try {
+                sales = JSON.parse(localStorage.getItem("sales")) || [];
+            } catch (error) {
+                console.error("Error parsing sales data from localStorage:", error);
+            }
+
+            if (sales.length === 0) {
+                container.innerHTML = "<p>No sales reports available.</p>";
+            } else {
+                sales.forEach(entry => {
+                    const div = document.createElement("div");
+                    div.innerHTML = `
+                        <strong>SIM:</strong> ${entry.sim}<br>
+                        <strong>ICCID:</strong> ${entry.iccid}<br>
+                        <strong>Sales:</strong> ${entry.sales}<br>
+                        <img src="${entry.photo}" width="100"><br>
+                        <small>${entry.time}</small><hr>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

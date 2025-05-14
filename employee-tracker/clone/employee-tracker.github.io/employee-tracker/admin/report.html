@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reports</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="container">
+  <h2>Employee Activity Reports</h2>
+  <pre id="report"></pre>
+  <script>
+    const logs = JSON.parse(localStorage.getItem('logs') || '[]');
+    document.getElementById('report').textContent = JSON.stringify(logs, null, 2);
+  </script>
+</body>
+</html>

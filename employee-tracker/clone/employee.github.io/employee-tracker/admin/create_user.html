@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>Create User</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body class="container">
+
+  <h2>Create Employee Account</h2>
+
+  <input type="text" id="username" placeholder="Username">
+
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="createUser()">Create</button>
+  <script>
+
+    function createUser() {
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      const user = document.getElementById('username').value;
+
+      const pass = document.getElementById('password').value;
+
+      users[user] = { password: pass };
+
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert("User created!");
+
+    }
+
+  </script>
+  
+</body>
+</html>

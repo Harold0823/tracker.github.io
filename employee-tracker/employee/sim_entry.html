@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>SIM Entry</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="container">
+    <h2><span class="material-icons">sim_card</span> SIM & ICCID Entry</h2>
+    
+    <form id="simForm">
+        <label>SIM Number: <input type="text" id="simNumber" required pattern="\d{11,15}" title="Enter a valid SIM number (11-15 digits)"></label><br>
+        <label>ICCID: <input type="text" id="iccid" required pattern="\d{19,20}" title="Enter a valid ICCID (19-20 digits)"></label><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="status"></p>
+
+    <script>
+        document.getElementById("simForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const simNumber = document.getElementById("simNumber").value.trim();
+            const iccid = document.getElementById("iccid").value.trim();
+
+            if (!simNumber.match(/^\d{11,15}$/) || !iccid.match(/^\d{19,20}$/)) {
+                document.getElementById("status").innerText = "Invalid SIM or ICCID format.";
+                return;
+            }
+
+            let simEntries = [];
+            try {
+                simEntries = JSON.parse(localStorage.getItem("simEntries")) || [];
+            } catch (error) {
+                console.error("Error parsing SIM entries:", error);
+            }
+
+            const entry = { simNumber: simNumber, iccid: iccid, timestamp: new Date().toLocaleString() };
+            simEntries.push(entry);
+            localStorage.setItem("simEntries", JSON.stringify(simEntries));
+
+            document.getElementById("status").innerText = "SIM & ICCID entry saved successfully!";
+            document.getElementById("simForm").reset();
+        });
+    </script>
+</body>
+</html>

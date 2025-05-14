@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="container">
+    <h2><span class="material-icons">edit</span> Update Profile</h2>
+    <form id="profileForm">
+        <label>Name: <input type="text" id="name" required></label><br>
+        <label>Photo: <input type="file" id="photo" accept="image/*" capture="environment" required></label><br>
+        <button type="submit">Save Profile</button>
+    </form>
+    <p id="status"></p>
+
+    <script>
+        function getAddress(lat, lng, callback) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(res => res.json())
+                .then(data => callback(data.display_name))
+                .catch(() => callback("Unknown location"));
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nameInput = document.getElementById("name").value.trim();
+            const photoFile = document.getElementById("photo").files[0];
+
+            if (!nameInput || !photoFile) {
+                document.getElementById('status').innerText = "Please fill in all fields and upload a photo.";
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+
+                    getAddress(lat, lng, (address) => {
+                        const reader = new FileReader();
+                        reader.onloadend = function() {
+                            const profile = {
+                                name: nameInput,
+                                photo: reader.result,
+                                lat: lat,
+                                lng: lng,
+                                address: address
+                            };
+
+                            let profiles = [];
+                            try {
+                                profiles = JSON.parse(localStorage.getItem("employeeProfiles")) || [];
+                            } catch (error) {
+                                console.error("Error parsing employeeProfiles:", error);
+                            }
+
+                            profiles.push(profile);
+                            localStorage.setItem("employeeProfiles", JSON.stringify(profiles));
+
+                            document.getElementById("status").innerText = "Profile saved successfully!";
+                        };
+                        reader.readAsDataURL(photoFile);
+                    });
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                    document.getElementById("status").innerText = "Failed to get location. Ensure GPS is enabled.";
+                }
+            );
+        });
+    </script>
+</body>
+</html>

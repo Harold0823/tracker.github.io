@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="container">
+    <h2><span class="material-icons">login</span> Admin Login</h2>
+
+    <form id="adminLoginForm">
+        <label>Username: <input type="text" id="adminUser" required></label><br>
+        <label>Password: <input type="password" id="adminPass" required></label><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="adminLoginStatus"></p>
+
+    <script>
+        document.getElementById("adminLoginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("adminUser").value.trim();
+            const password = document.getElementById("adminPass").value.trim();
+
+            // Default admin credentials
+            const adminUsername = "admin";
+            const adminPassword = "1234";
+
+            if (username === adminUsername && password === adminPassword) {
+                localStorage.setItem("isAdminLoggedIn", "true");
+                window.location.href = "index.html";  // Redirect to Admin Dashboard
+            } else {
+                document.getElementById("adminLoginStatus").innerText = "Invalid credentials!";
+            }
+        });
+    </script>
+</body>
+</html>

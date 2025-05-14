@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Employee Profiles</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="container">
+    <h2><span class="material-icons">badge</span> Employee Profiles</h2>
+    <div id="profilesContainer">Loading profiles...</div>
+
+    <script>
+        function getProfiles() {
+            try {
+                return JSON.parse(localStorage.getItem('employeeProfiles')) || [];
+            } catch (error) {
+                console.error("Error parsing employeeProfiles:", error);
+                return [];
+            }
+        }
+
+        function renderProfiles() {
+            const profiles = getProfiles();
+            let html = '<ul>';
+            profiles.forEach((p, index) => {
+                html += `<li>
+                    <strong>${p.name}</strong><br>
+                    <img src="${p.photo}" width="100" alt="${p.name}"><br>
+                    ${p.address}<br>
+                    (${p.lat}, ${p.lng})<br>
+                    <button onclick="deleteProfile(${index})">Delete</button>
+                    <button onclick="editProfile(${index})">Edit</button>
+                </li>`;
+            });
+            html += '</ul>';
+            document.getElementById('profilesContainer').innerHTML = profiles.length ? html : "<p>No profiles found.</p>";
+        }
+
+        function deleteProfile(index) {
+            let profiles = getProfiles();
+            if (index >= 0 && index < profiles.length) {
+                profiles.splice(index, 1);
+                localStorage.setItem('employeeProfiles', JSON.stringify(profiles));
+                renderProfiles();
+            }
+        }
+
+        function editProfile(index) {
+            let profiles = getProfiles();
+            if (index >= 0 && index < profiles.length) {
+                const newName = prompt("Enter new name:", profiles[index].name);
+                if (newName && newName.trim()) {
+                    profiles[index].name = newName.trim();
+                    localStorage.setItem('employeeProfiles', JSON.stringify(profiles));
+                    renderProfiles();
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", renderProfiles);
+    </script>
+</body>
+</html>

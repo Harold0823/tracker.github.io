@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="container">
+    <h2><span class="material-icons">login</span> Login</h2>
+
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="loginStatus"></p>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Admin default credentials
+            const adminUsername = "admin";
+            const adminPassword = "1234";
+
+            // Fetch stored employee accounts
+            let employees = [];
+            try {
+                employees = JSON.parse(localStorage.getItem("employees")) || [];
+            } catch (error) {
+                console.error("Error parsing employee data:", error);
+            }
+
+            // Check if user is an Admin
+            if (username === adminUsername && password === adminPassword) {
+                localStorage.setItem("isAdminLoggedIn", "true");
+                window.location.href = "../admin/index.html";
+                return;
+            }
+
+            // Check if user is an Employee
+            const employee = employees.find(emp => emp.username === username && emp.password === password);
+            if (employee) {
+                localStorage.setItem("loggedInEmployee", JSON.stringify({ username: employee.username }));
+                window.location.href = "../employee/index.html";
+                return;
+            }
+
+            // Invalid credentials message
+            document.getElementById("loginStatus").innerText = "Invalid username or password.";
+        });
+    </script>
+</body>
+</html>

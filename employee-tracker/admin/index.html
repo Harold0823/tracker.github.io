@@ -1,0 +1,36 @@
+<!-- Admin Dashboard -->
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script defer>
+        if (localStorage.getItem("isAdminLoggedIn") !== "true") {
+            window.location.href = "login.html"; // Redirect if not logged in
+        }
+    </script>
+</head>
+<body class="container">
+    <h2><span class="material-icons">admin_panel_settings</span> Admin Dashboard</h2>
+
+    <nav>
+        <ul>
+            <li><a href="create_employee.html"><span class="material-icons">person_add</span> Create Employee</a></li>
+            <li><a href="view_logs.html"><span class="material-icons">list</span> View Logs</a></li>
+            <li><a href="map_view.html"><span class="material-icons">map</span> Map View</a></li>
+            <li><a href="generate_report.html"><span class="material-icons">download</span> Generate Report</a></li>
+            <li><a href="../index.html"><span class="material-icons">home</span> Home</a></li> <!-- Home Button Added -->
+        </ul>
+    </nav>
+
+    <button onclick="logoutAdmin()">Logout</button>
+
+    <script>
+        function logoutAdmin() {
+            localStorage.removeItem("isAdminLoggedIn");
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>

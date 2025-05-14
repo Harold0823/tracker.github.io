@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+    <script>
+        // Clear all session-related keys
+        localStorage.removeItem("loggedInEmployee");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("currentUser");
+
+        // Redirect after clearing storage
+        window.location.href = "index.html";
+    </script>
+</head>
+<body>
+    <p>Logging out...</p>
+</body>
+</html>

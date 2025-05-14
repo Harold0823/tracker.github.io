@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>View Logs</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script defer>
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <h2><span class="material-icons">list</span> Employee Logs</h2>
+    <ul id="logList"></ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const list = document.getElementById('logList');
+
+            let logs = [];
+            try {
+                logs = JSON.parse(localStorage.getItem("clockLogs")) || [];
+            } catch (error) {
+                console.error("Error parsing logs from localStorage:", error);
+            }
+
+            if (logs.length === 0) {
+                list.innerHTML = "<li>No logs available.</li>";
+            } else {
+                logs.forEach(log => {
+                    const li = document.createElement("li");
+                    li.textContent = `Employee: ${log.employee} - ${log.action} at ${log.time} (${log.address})`;
+                    list.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

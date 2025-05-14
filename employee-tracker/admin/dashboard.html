@@ -1,0 +1,60 @@
+<!-- admin-tracker/admin/index.html -->
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script defer>
+        // Redirect if not logged in
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <button class="theme-toggle material-icons" onclick="toggleTheme()">brightness_6</button>
+
+    <h2>Admin Dashboard</h2>
+
+    <nav>
+        <ul>
+            <li><a href="create_user.html">Create Employee</a></li>
+            <li><a href="view_logs.html">View Logs</a></li>
+            <li><a href="map_view.html">Map View</a></li>
+            <li><a href="report.html">Reports</a></li>
+        </ul>
+    </nav>
+
+    <button onclick="logoutAdmin()">Logout</button>
+
+    <script>
+        function logoutAdmin() {
+            localStorage.removeItem("adminLoggedIn");
+            window.location.href = "login.html";
+        }
+
+        function toggleTheme() {
+            const body = document.documentElement;
+
+            if (!body.classList.contains('dark') && !body.classList.contains('light')) {
+                body.classList.add('light');
+            }
+
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+
+            // Save preference to localStorage
+            localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
+        }
+
+        // Apply theme from saved preference on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.classList.add(savedTheme);
+            }
+        });
+    </script>
+</body>
+</html>

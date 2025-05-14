@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Map View</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+<body class="container">
+  <h2>Employee Locations</h2>
+  <div id="map" style="height: 400px;"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([14.5995, 120.9842], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    const logs = JSON.parse(localStorage.getItem('logs') || '[]');
+    logs.forEach(log => {
+      if (log.lat && log.lng) {
+        L.marker([log.lat, log.lng]).addTo(map).bindPopup(`${log.user} - ${log.action}`);
+      }
+    });
+  </script>
+</body>
+</html>

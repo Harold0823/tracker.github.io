@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Generate Report</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script defer>
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <h2><span class="material-icons">download</span> Generate Report</h2>
+    <button onclick="downloadReport()">Download Report</button>
+
+    <script>
+        function downloadReport() {
+            const reportData = [
+                ["Employee", "Action", "Time", "Address"],
+                ["John", "Clock In", "8:00 AM", "123 Main St"],
+                ["Jane", "Sales", "$500", "456 Avenue"]
+            ];
+
+            // Convert data to CSV format
+            const csvContent = reportData.map(row => row.join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employee_report.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Ensure URL is revoked after download
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+    </script>
+</body>
+</html>

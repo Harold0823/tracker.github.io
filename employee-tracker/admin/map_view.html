@@ -1,0 +1,50 @@
+<!-- employee-tracker/admin/map_view.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map View</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script defer>
+        if (localStorage.getItem("isAdminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <h2><span class="material-icons">map</span> Employee Map View</h2>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const map = L.map('map').setView([0, 0], 2);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            let logs = [];
+            try {
+                logs = JSON.parse(localStorage.getItem('clockLogs')) || [];
+            } catch (error) {
+                console.error("Error parsing clockLogs from localStorage:", error);
+            }
+
+            logs.forEach(log => {
+                if (log.lat && log.lng) {
+                    const marker = L.marker([log.lat, log.lng]).addTo(map);
+                    const popupContent = `
+                        <strong>${log.employee}</strong> (${log.action.toUpperCase()})<br>
+                        <img src="${log.photo}" width="100" alt="Clock-in Photo"><br>
+                        Address: ${log.address}<br>
+                        Time: ${log.timestamp}
+                    `;
+                    marker.bindPopup(popupContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

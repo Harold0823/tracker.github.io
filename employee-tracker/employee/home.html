@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="light">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script defer>
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body class="container">
+    <h2>Welcome</h2>
+    
+    <nav>
+        <ul>
+            <li><a href="clock.html">Clock In/Out</a></li>
+            <li><a href="sales.html">Sales Report</a></li>
+            <li><a href="logout.html">Logout</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
